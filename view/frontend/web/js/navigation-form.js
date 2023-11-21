@@ -42,7 +42,7 @@ define([
          *  @private
          */
         _fixAjaxHistory: function () {
-            if(this.options.ajaxFilters && this.options.ajaxCache && (!window.history.state || !window.history.state.html))
+            if(this.options.ajaxFilters && (!window.history.state || !window.history.state.html))
             {
                 //if window history is empty, do an ajax request to fill it.
                 this.currentXhr = $.ajax({
@@ -383,6 +383,13 @@ define([
             const baseUrl = window.location.origin;
             const resultUrl = new URL(response.url, baseUrl);
             const queryParams = new URLSearchParams(window.location.search ?? '');
+
+            queryParams.forEach((value, key) => {
+                if (key == 'p') {
+                    queryParams.delete(key);
+                }
+            });
+
             let queryParamsString = queryParams.toString();
 
             if (resultUrl.search) {
